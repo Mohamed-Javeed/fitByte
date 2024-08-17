@@ -1,0 +1,221 @@
+{% load static %}
+
+<!-- Top navbar -->
+<div class="container-fluid"
+  style="/* padding-left: 22%; *//* width: max-content; */padding: 0;background: transparent;">
+  <nav class="navbar navbar-expand-lg nav-underline navbar-light m0 pd0" style="
+    background: transparent;
+">
+    <!-- Container wrapper -->
+      {% if active != 'profile' %}
+    <div class="container-fluid" style="
+    background: transparent;">
+      <div class="container-fluid d-flex align-items-center justify-content-between">
+        <a href="{% url 'profile' %}" class="navbar-brand nav-link">
+          <img class="img-fluid sm" src="/static/images/girl.png" alt="home" height="55" ,="" width="55" style="
+    background: transparent;
+    /* border: none; */
+    ">
+        </a>
+            
+      <div class="d-flex align-items-center container-fluid rounded-pill pb-2 pt-2" style="
+      background: #373f5d;
+      width: max-content;
+      margin: 0;
+      padding: 0;
+  ">
+          <!-- carbos -->
+          <div class="d-flex align-items-center container-fluid" style="
+      /* border-right: black; */
+      /* margin-left: 1px; */
+      width: max-content;
+      border-right: 1px solid white;
+      margin: 0;
+  ">
+            <img class="img-fluid sm" src="/static/images/carbo.png" alt="home" height="25" width="25">
+            <h5 class="m-0 fs-5" id="carbos-c" style="
+      padding-left: 4px;
+  ">{{carbos}}</h5>
+          </div>
+  
+          <!-- protos -->
+          <div class="d-flex align-items-center container-fluid" style="
+      /* border-right: black; */
+      /* margin-left: 1px; */
+      width: max-content;
+      border-right: 1px solid black;
+  ">
+            <img class="img-fluid sm" src="/static/images/proto.png" alt="home" height="25" width="25">
+            <h5 class="m-0 fs-5" id="protos-c" style="
+      padding-left: 4px;
+  ">{{protos}}</h5>
+          </div>
+  
+          <!-- fattos -->
+          <div class="d-flex align-items-center container-fluid" style="
+      /* border-right: black; */
+      /* margin-left: 1px; */
+      width: max-content;
+      /* border-right: 1px solid black; */
+  ">
+            <img class="img-fluid sm" src="/static/images/fatto.png" alt="home" height="25" width="25">
+            <h5 class="m-0 fs-5" id="fatos-c" style="
+      padding-left: 4px;
+  ">{{fatos}}</h5>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+
+      {% else %}
+      <div class="container-fluid" style="
+    background: transparent;">
+      <div class="container-fluid d-flex" style="flex-direction: column;">
+        <div class="d-flex align-items-center" >
+          <h5 class="fs-5 mx-auto">{{username}}</h5>
+        </div>
+      <div class="d-flex align-items-center container-fluid rounded-pill pb-2 pt-2 mx-auto" style="
+      background: #373f5d;
+      width: max-content;
+      margin: 0;
+      padding: 0;
+  ">
+          <!-- carbos -->
+          <div class="d-flex align-items-center container-fluid" style="
+      /* border-right: black; */
+      /* margin-left: 1px; */
+      width: max-content;
+      border-right: 1px solid white;
+      margin: 0;
+  ">
+            <img class="img-fluid sm" src="/static/images/carbo.png" alt="home" height="25" width="25">
+            <h5 class="m-0 fs-5" id="carbos-c" style="
+      padding-left: 4px;
+  ">{{carbos}}</h5>
+          </div>
+  
+          <!-- protos -->
+          <div class="d-flex align-items-center container-fluid" style="
+      /* border-right: black; */
+      /* margin-left: 1px; */
+      width: max-content;
+      border-right: 1px solid black;
+  ">
+            <img class="img-fluid sm" src="/static/images/proto.png" alt="home" height="25" width="25">
+            <h5 class="m-0 fs-5" id="protos-c" style="
+      padding-left: 4px;
+  ">{{protos}}</h5>
+          </div>
+  
+          <!-- fattos -->
+          <div class="d-flex align-items-center container-fluid" style="
+      /* border-right: black; */
+      /* margin-left: 1px; */
+      width: max-content;
+      /* border-right: 1px solid black; */
+  ">
+            <img class="img-fluid sm" src="/static/images/fatto.png" alt="home" height="25" width="25">
+            <h5 class="m-0 fs-5" id="fatos-c" style="
+      padding-left: 4px;
+  ">{{fatos}}</h5>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+      {% endif %}
+      <!-- Right elements -->
+      {% if active == 'profile' %}
+      {% else %}
+  
+      {% endif %}
+    
+    <!-- Container wrapper -->
+  </nav>
+</div>
+
+<!-- Bottom Navbar -->
+<div class="container-fluid fixed-bottom mb-3" style="/* padding-left: 22%; */width: max-content;">
+  <div class="mx-auto">
+
+    <nav class="navbar navbar-expand-lg nav-underline navbar-light bg-body-tertiary rounded-pill"
+      style="width: max-content;">
+      <!-- Container wrapper -->
+      <div class="container-fluid d-flex">
+
+        <!-- Right elements -->
+        <div class="d-flex justify-content-around mx-auto">
+
+          <!-- home -->
+          {% if active == 'home' %}
+          <div class="container-sm align-items-center">
+            <a class="navbar-brand nav-link active max-auto" href="/">
+              <img class="img-fluid sm" src="/static/images/home.png" alt="home" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% else %}
+          <div class="container-sm align-items-center">
+            <a class="navbar-brand nav-link max-auto" href="/">
+              <img class="img-fluid sm" src="/static/images/home.png" alt="home" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% endif %}
+
+
+          <!-- nutrininja -->
+          {% if active == 'nutrininja' %}
+          <div class="container-sm">
+            <a class="navbar-brand nav-link active" href="/nutrininja">
+              <img class="img-fluid" src="/static/images/photo-camera.png" alt="camera" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% else %}
+          <div class="container-sm">
+            <a class="navbar-brand nav-link" href="/nutrininja">
+              <img class="img-fluid" src="/static/images/photo-camera.png" alt="camera" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% endif %}
+
+
+
+          <!-- chat -->
+          {% if active == 'chat' %}
+          <div class="container-sm">
+            <a class="navbar-brand nav-link active" href="/chat">
+              <img class="img-fluid" src="/static/images/chat.png" alt="chat" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% else %}
+          <div class="container-sm">
+            <a class="navbar-brand nav-link" href="/chat">
+              <img class="img-fluid" src="/static/images/chat.png" alt="chat" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% endif %}
+
+
+          <!-- Avatar -->
+          {% if active == 'profile' %}
+          <div class="container-sm">
+            <a class="navbar-brand nav-link active" href="/profile">
+              <img class="img-fluid" src="/static/images/account.png" alt="profile" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% else %}
+          <div class="container-sm">
+            <a class="navbar-brand nav-link" href="/profile">
+              <img class="img-fluid" src="/static/images/account.png" alt="profile" height="25" ,="" width="25">
+            </a>
+          </div>
+          {% endif %}
+
+        </div>
+        <!-- Right elements -->
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+  </div>
+</div>

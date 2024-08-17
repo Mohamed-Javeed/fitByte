@@ -1,0 +1,627 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>fitByte</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+</head>
+
+<body>
+  <div class="container p-0" style="background: #535f8c;color:white;height: 1000px;">
+    {% include 'navbar.html' %}
+    <div id="liveAlertPlaceholder"></div>
+
+    <div class="container-fluid mt-3 d-flex flex-column align-items-center">
+      <h2 class="h3">Upload a snap of your food</h2>
+      {% if photo_path %}
+      <div class="card d-flex flex-column align-items-center">
+        <img src="{% static photo_path %}" class="img-thumbnail rounded  mx-auto d-block border-0" alt="...">
+        <div class="card-body">
+          <h5 class="card-title text-center">{{photo_name}}</h5>
+          <form action="{% url 'nutrininja' %}" method="POST" class="form d-grid">
+            {% csrf_token %}
+            <input name="photo_name" value={{photo_name}} class="form-control d-none">
+            <p class="d-none">
+              {{ result|json_script:'result' }}
+            </p>
+            {% if pred %}
+
+            <button type="button" class="btn btn-primary mx-auto mb-3 mt-3" data-bs-toggle="modal"
+              data-bs-target="#exampleModal" style="
+    width: max-content;
+">Get Rewards</button>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Food</th>
+                  <th scope="col">Cals</th>
+                  <th scope="col">Carbs</th>
+                  <th scope="col">Protien</th>
+                  <th scope="col">Fats</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for food_nut in pred_nut %}
+                <tr>
+                  <td>{{food_nut.0}}</td>
+                  {% for nut in food_nut.1 %}
+                  <td>{{nut}}</td>
+                  {% endfor %}
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+                <div class="modal-content" style="
+    background: transparent;
+    border: none;
+">
+
+                  <div class="modal-body" style="
+    background: transparent;
+">
+
+                    <div class="modal-header pt-0 pb-0" style="
+border: none;
+color: white;
+">
+                      <h1 class="modal-title h1" id="exampleModalLabel">Rewards</h1>
+                      <button type="button" class="btn-close" id="reward-btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                    </div>
+                    <div class="row">
+                      <div class="row row-cols-1 row-cols-md-3 g-4 mx-auto">
+                        <div class="slide-container container-fluid" style="
+    margin: auto;
+    /* width: 600px; */
+    text-align: center;
+">
+                          {% if carbs != 0 %}
+                          <div class="flip-card-3D-wrapper mb-2">
+                            <div class="col flip-card" id="flip-card-carb" style="
+      transition: all 1s ease-in-out;
+      transform-style: preserve-3d;
+      background: white;
+      width: 300px;
+      display: inline-block;
+      margin: auto;
+      border-radius: 5px;
+      position: relative;
+      text-align: center;
+      box-shadow: -1px 15px 30px -12px black;
+      z-index: 9999;
+      ">
+                              <div class="card flip-card-front" style="
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      z-index: 2;
+      border-radius: 10px;
+      border: 3px solid #93d6e8;
+      ">
+                                <div class="card-image">
+                                  <img src="/static/images/blue-texture.jpg" class="card-img-top" alt="blue texture"
+                                    style="
+      display: block;
+      width: 299px;
+      height: 234px;
+      ">
+                                </div>
+                                <div class="container-fluid pt-1">
+
+
+                                  <button class="btn btn-info" id="flip-card-btn-turn-to-back-carb" onclick="flipCarbCard()"
+                                    type="button">Reveal</button>
+                                </div>
+
+                              </div>
+                              <div class="card flip-card-back" style="
+      background: white;
+      transform: rotateY(180deg);
+      ">
+                                <div class="card-image">
+                                  <img src="{% static 'images/carb-card.png' %}" class="card-img-top" alt="food-card"
+                                    style="
+    display: block;
+    width: 282px;
+    height: 201px;
+    object-fit: cover;
+    z-index: -1;
+">
+                                </div>
+                                <div class="card-body" style="
+    padding-top: 0;
+">
+                                  <div class="container-fluid d-flex mt-3" style="
+    width: max-content;
+">
+                                    <div class="container d-flex align-items-center"
+                                      style="width: max-content;margin: 0;">
+
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <p class="card-text">
+                                          <img src="{% static 'images/carbo.png' %}" alt="carbo" class="img-fluid sm"
+                                            width="50" height="50">
+                                        </p>
+                                      </div>
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <h5 style="
+    width: max-content;
+">x{{carbs}}</h5>
+                                      </div>
+
+                                    </div>
+
+
+                                    <div class="container d-flex align-items-center"
+                                      style="width: max-content;margin: 0;">
+
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <p class="card-text">
+                                          <img src="/static/images/green-energy.png" alt="energy" class="img-fluid sm"
+                                            width="50" height="50">
+                                        </p>
+                                      </div>
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <h5 style="
+    width: max-content;
+">x{{cals}}</h5>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          {% endif %}
+
+                          {% if protein != 0 %}
+                          <div class="flip-card-3D-wrapper mb-2">
+                            <div class="col flip-card" id="flip-card-protein" style="
+      transition: all 1s ease-in-out;
+      transform-style: preserve-3d;
+      background: white;
+      width: 300px;
+      display: inline-block;
+      margin: auto;
+      border-radius: 5px;
+      position: relative;
+      text-align: center;
+      box-shadow: -1px 15px 30px -12px black;
+      z-index: 9999;
+      ">
+                              <div class="card flip-card-front" style="
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      z-index: 2;
+      border-radius: 10px;
+      border: 3px solid #93d6e8;
+      ">
+                                <div class="card-image">
+                                  <img src="/static/images/blue-texture.jpg" class="card-img-top" alt="blue-texture"
+                                    style="
+      display: block;
+      width: 299px;
+      height: 234px;
+      ">
+                                </div>
+                                <div class="container-fluid pt-1">
+
+
+                                  <button class="btn btn-info" id="flip-card-btn-turn-to-back-protein" onclick="flipProteinCard()"
+                                    type="button">Reveal</button>
+                                </div>
+
+                              </div>
+                              <div class="card flip-card-back" style="
+      background: white;
+      transform: rotateY(180deg);
+      ">
+                                <div class="card-image">
+                                  <img src="{% static 'images/protein-card.png' %}" class="card-img-top" alt="food-card"
+                                    style="
+    display: block;
+    width: 282px;
+    height: 201px;
+    object-fit: cover;
+    z-index: -1;
+">
+                                </div>
+                                <div class="card-body" style="
+    padding-top: 0;
+">
+                                  <div class="container-fluid d-flex mt-3" style="
+    width: max-content;
+">
+                                    <div class="container d-flex align-items-center"
+                                      style="width: max-content;margin: 0;">
+
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <p class="card-text">
+                                          <img src="{% static 'images/proto.png' %}" alt="proto" class="img-fluid sm"
+                                            width="50" height="50">
+                                        </p>
+                                      </div>
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <h5 style="
+    width: max-content;
+">x{{protein}}</h5>
+                                      </div>
+
+                                    </div>
+
+
+                                    <div class="container d-flex align-items-center"
+                                      style="width: max-content;margin: 0;">
+
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <p class="card-text">
+                                          <img src="/static/images/green-energy.png" alt="energy" class="img-fluid sm"
+                                            width="50" height="50">
+                                        </p>
+                                      </div>
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <h5 style="
+    width: max-content;
+">x{{cals}}</h5>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                  <!-- <button class="flip-card-btn-turn-to-front- btn btn-outline-info mt-2" type="button">Collect</button> -->
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+                          {% endif %}
+
+                          {% if fats != 0 %}
+                          <div class="flip-card-3D-wrapper mb-2">
+
+
+
+                            <div class="col flip-card" id="flip-card-fat" style="
+      transition: all 1s ease-in-out;
+      transform-style: preserve-3d;
+      background: white;
+      width: 300px;
+      display: inline-block;
+      margin: auto;
+      border-radius: 5px;
+      position: relative;
+      text-align: center;
+      box-shadow: -1px 15px 30px -12px black;
+      z-index: 9999;
+      ">
+                              <div class="card flip-card-front" style="
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      z-index: 2;
+      border-radius: 10px;
+      border: 3px solid #93d6e8;
+      ">
+                                <div class="card-image">
+                                  <img src="/static/images/blue-texture.jpg" class="card-img-top" alt="blue-texture"
+                                    style="
+      display: block;
+      width: 299px;
+      height: 234px;
+      ">
+                                </div>
+                                <div class="container-fluid pt-1">
+
+
+                                  <button class="btn btn-info" id="flip-card-btn-turn-to-back-fat" onclick="flipFatCard()"
+                                    type="button">Reveal</button>
+                                </div>
+
+                              </div>
+                              <div class="card flip-card-back-2" style="
+      background: white;
+      transform: rotateY(180deg);
+      ">
+                                <div class="card-image">
+                                  <img src="{% static 'images/fat-card.png' %}" class="card-img-top" alt="food-card"
+                                    style="
+    display: block;
+    width: 282px;
+    height: 201px;
+    object-fit: cover;
+    z-index: -1;
+">
+                                </div>
+                                <div class="card-body" style="
+    padding-top: 0;
+">
+                                  <div class="container-fluid d-flex mt-3" style="
+    width: max-content;
+">
+                                    <div class="container d-flex align-items-center"
+                                      style="width: max-content;margin: 0;">
+
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <p class="card-text">
+                                          <img src="{% static 'images/fatto.png' %}" alt="carbo" class="img-fluid sm"
+                                            width="50" height="50">
+                                        </p>
+                                      </div>
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <h5 style="
+    width: max-content;
+">x{{fats}}</h5>
+                                      </div>
+
+                                    </div>
+
+
+                                    <div class="container d-flex align-items-center"
+                                      style="width: max-content;margin: 0;">
+
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <p class="card-text">
+                                          <img src="/static/images/green-energy.png" alt="energy" class="img-fluid sm"
+                                            width="50" height="50">
+                                        </p>
+                                      </div>
+                                      <div class="container-fluid" style="
+    padding: 0;
+    width: max-content;
+    margin: 0;
+">
+                                        <h5 style="
+    width: max-content;
+">x{{cals}}</h5>
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                  <!-- <button class="flip-card-btn-turn-to-front-2 btn btn-outline-info mt-2" type="button">Collect</button> -->
+                                </div>
+
+                              </div>
+                            </div>
+
+                          </div>
+                          {% endif %}
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="modal-footer mx-auto" style="border: none;">
+                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                    <button type="button" class="btn btn-primary" onclick="collectReward()">Collect all</button>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+            <button class="btn btn-primary mx-auto" id="logmeal-btn" type="button" onclick="logmeal()"
+              style="width: max-content;">Log
+              Meal</button>
+            {% else %}
+            <button class="btn btn-primary mx-auto" type="submit" style="width: max-content;">Scan Food</button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+
+      {% else %}
+      <img class="img-thumbnail rounded rounded-circle mx-auto d-block border-0" src="{% static 'images/food_snap.svg' %}"
+        alt="food snap">
+      {% endif %}
+
+      <form class="form" action="{% url 'nutrininja' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3 d-flex flex-column align-items-center">
+          <label for="food_snap" class="form-label invisible"></label>
+          <input class="form-control" name="food_snap" type="file" id="food_snap">
+          <button type="submit" class="btn btn-primary mt-3">Upload</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="container-fluid d-none">
+    <h2>Hidden</h2>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+
+  <!-- <script>
+      function getScores() {
+        const axios = require("axios");
+        const fs = require("fs");
+
+      const image = fs.readFileSync(photo_path, {
+          encoding: "base64"
+      });
+
+      axios({
+          method: "POST",
+          url: "https://detect.roboflow.com/nutracal-food-detection/1",
+          params: {
+              api_key: "4TFLqpycRN0FG5gHvY2z"
+          },
+          data: image,
+          headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+          }
+      })
+      .then(function(response) {
+          console.log(response.data);
+          pred = response.data
+      })
+      .catch(function(error) {
+          console.log(error.message);
+        });
+      }
+      </script> -->
+
+  <script>
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    function logmeal() {
+      csrftoken = getCookie('csrftoken');
+      data = {
+        'result': JSON.parse(document.getElementById('result').textContent),
+        'photo_name': "{{photo_name}}",
+        'nutri_info': "{{nutri_info}}",
+        'nutri_info_d': "{{nutri_info_d}}"
+      }
+
+      fetch("/logmeal", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "X-CSRFToken": csrftoken
+        }
+      }).then((response) => json = response.json()).then(() => {
+        window.location.href = "{% url 'home' %}";
+      })
+    }
+
+    function collectReward() {
+      csrftoken = getCookie('csrftoken');
+
+      data = {
+        'carbo': "{{carbs}}",
+        'proto': "{{protein}}",
+        'fato': "{{fats}}",
+        'xp': "{{cals}}"
+      }
+
+      fetch("/getreward", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "X-CSRFToken": csrftoken
+        }
+      }).then((response) => response = response.json()).then((response) => {
+        console.log(response)
+        const carbos_c = document.getElementById('carbos-c')
+        const protos_c = document.getElementById('protos-c')
+        const fatos_c = document.getElementById('fatos-c')
+        
+        carbos_c.innerHTML = `${response.carbos}`
+        protos_c.innerHTML = `${response.protos}`
+        fatos_c.innerHTML = `${response.fatos}`
+        
+        document.getElementById('reward-btn-close').click()
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+          `<div class="alert alert-success alert-dismissible" role="alert">`,
+          `   <div>${'Rewards Collected!'}</div>`,
+          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          '</div>'
+        ].join('');
+
+        alertPlaceholder.append(wrapper);
+      })
+    }
+
+    function flipCarbCard() {
+      carbCard = document.getElementById('flip-card-carb')
+      carbCard.classList.toggle('do-flip')
+    }
+
+    function flipProteinCard() {
+      proteinCard = document.getElementById('flip-card-protein')
+      proteinCard.classList.toggle('do-flip')
+    }
+
+    function flipFatCard() {
+      fatCard = document.getElementById('flip-card-fat')
+      fatCard.classList.toggle('do-flip')
+    }
+  </script>
+
+</body>
+
+</html>
